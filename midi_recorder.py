@@ -9,7 +9,7 @@ def get_port_by_name(port_name):
     return None
 
 def main():
-    target_port_name = "1: CASIO USB-MIDI:CASIO USB-MIDI MIDI 1 24:0"
+    target_port_name = "CASIO USB-MIDI:CASIO USB-MIDI MIDI 1 24:0"
     
     while True:
         port_name = get_port_by_name(target_port_name)
