@@ -7,11 +7,11 @@ fn main() {
     loop {
         let ports = midi_input.ports();
         
-        match ports.iter().find(|&&port| midi_input.port_name(port).unwrap().contains(port_name)) {
+        match ports.iter().find(|&&port| midi_input.port_name(&port).unwrap().contains(port_name)) {
             Some(&port) => {
-                println!("{} found! Listening...", midi_input.port_name(port).unwrap());
+                println!("{} found! Listening...", midi_input.port_name(&port).unwrap());
 
-                let in_port = midi_input.connect(port, "midir-read-input", move |_, message, _| {
+                let in_port = midi_input.connect(&port, "midir-read-input", move |_, message, _| {
                     println!("{:?}", message);
                 }, ()).unwrap();
 
