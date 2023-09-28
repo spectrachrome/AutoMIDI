@@ -12,7 +12,7 @@ fn main() {
             println!("{:?}", midi_in.port_name(port).unwrap());
         }
 
-        if let Some(in_port) = in_ports.iter().find(|p| midi_in.port_name(p).unwrap() == "CASIO USB-MIDI MIDI 1") {
+        if let Some(in_port) = in_ports.iter().find(|p| midi_in.port_name(p).unwrap() == "CASIO USB-MIDI:CASIO USB-MIDI MIDI 1 24:0") {
             println!("Found port: {:?}", midi_in.port_name(in_port).unwrap());
 
             let _conn_in = midi_in.connect(in_port, "midir-read-input", move |_, message, _| {
