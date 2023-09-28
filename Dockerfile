@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.8-slim
+FROM python
 
 # Set the working directory in docker
 WORKDIR /app
