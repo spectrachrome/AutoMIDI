@@ -2,11 +2,16 @@ use midir::{MidiInput, Ignore};
 use std::{thread, time};
 
 fn main() {
-    let mut midi_in = MidiInput::new("midir reading input").unwrap();
+    let midi_in = MidiInput::new("midir reading input").unwrap();
     midi_in.ignore(Ignore::None);
 
     loop {
         let in_ports = midi_in.ports();
+        println!("Available ports:");
+        for port in &in_ports {
+            println!("{:?}", midi_in.port_name(port).unwrap());
+        }
+
         if let Some(in_port) = in_ports.iter().find(|p| midi_in.port_name(p).unwrap() == "CASIO USB-MIDI MIDI 1") {
             println!("Found port: {:?}", midi_in.port_name(in_port).unwrap());
 
