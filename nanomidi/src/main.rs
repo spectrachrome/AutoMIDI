@@ -2,7 +2,7 @@ use midir::{MidiInput, Ignore};
 use std::{thread, time};
 
 fn main() {
-    let midi_in = MidiInput::new("midir reading input").unwrap();
+    let mut midi_in = MidiInput::new("midir reading input").unwrap();
     midi_in.ignore(Ignore::None);
 
     loop {
