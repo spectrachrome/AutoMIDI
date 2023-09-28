@@ -1,29 +1,25 @@
 use midir::{MidiInput, Ignore};
+use std::{thread, time};
 
 fn main() {
-    let midi_input = MidiInput::new("MIDI Listener").unwrap();
-    let port_name = "CASIO USB-MIDI MIDI 1";
+    let midi_in = MidiInput::new("midir reading input").unwrap();
+    midi_in.ignore(Ignore::None);
 
     loop {
-        let ports = midi_input.ports();
-        
-        match ports.iter().find(|&&port| midi_input.port_name(&port).unwrap().contains(port_name)) {
-            Some(&port) => {
-                println!("{} found! Listening...", midi_input.port_name(&port).unwrap());
+        let in_ports = midi_in.ports();
+        if let Some(in_port) = in_ports.iter().find(|p| midi_in.port_name(p).unwrap() == "CASIO USB-MIDI MIDI 1") {
+            println!("Found port: {:?}", midi_in.port_name(in_port).unwrap());
 
-                let in_port = midi_input.connect(&port, "midir-read-input", move |_, message, _| {
-                    println!("{:?}", message);
-                }, ()).unwrap();
+            let _conn_in = midi_in.connect(in_port, "midir-read-input", move |_, message, _| {
+                println!("{:?}", message);
+            }, ()).unwrap();
 
-                // Keep the program running to continue listening to MIDI messages
-                loop {
-                    std::thread::sleep(std::time::Duration::from_secs(10));
-                }
-            },
-            None => {
-                println!("{} not found. Retrying in 10 seconds...", port_name);
-                std::thread::sleep(std::time::Duration::from_secs(10));
-            }
+            // Prevent exiting immediately
+            thread::sleep(time::Duration::from_millis(10000));
+            break;
+        } else {
+            println!("Port not found, retrying in 5 seconds...");
+            thread::sleep(time::Duration::from_secs(5));
         }
     }
 }
